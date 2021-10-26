@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "tesp-api"
+version = "0.1.0"
+description = "An implementation of a task execution engine based on the TES standard running on Pulsar"
+authors = ["Norbert Dopjera <ndopjera@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.70.0"
+uvicorn = "^0.15.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+
+[tool.poetry.scripts]
+start = "src.tesp_api:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
