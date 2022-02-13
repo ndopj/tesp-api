@@ -7,7 +7,10 @@ authors = ["Norbert Dopjera <ndopjera@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 fastapi = "^0.70.0"
+orjson = "^3.6.4"
 uvicorn = "^0.15.0"
+pydantic = "^1.8.2"
+motor = "^2.5.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"

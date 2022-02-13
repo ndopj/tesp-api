@@ -21,8 +21,8 @@ app.include_router(api_router)
 def main():
     import uvicorn
     LOGGING_CONFIG["formatters"]["default"]["fmt"] = "%(asctime)s [%(name)s] %(levelprefix)s %(message)s"
-    LOGGING_CONFIG["formatters"]["access"]["fmt"]\
-        = '%(asctime)s [%(name)s] %(levelprefix)s %(client_addr)s - "%(request_line)s" %(status_code)s'
+    LOGGING_CONFIG["formatters"]["access"]["fmt"] = '%(asctime)s [%(name)s] %(levelprefix)s %(client_addr)s'\
+                                                    ' - "%(request_line)s" %(status_code)s'
     uvicorn.run("src.tesp_api:app",
                 host="0.0.0.0", port=8081, reload=True, workers=2, log_level="debug")
 
