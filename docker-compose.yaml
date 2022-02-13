@@ -1,0 +1,103 @@
+version: '3.8'
+
+services:
+  tesp-api:
+    build:
+      context: ./
+      dockerfile: docker/tesp_api/Dockerfile
+      target: development
+    image: tesp-api
+    container_name: tesp-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - tesp-db
+    volumes:
+      - ./:/app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  tesp-db:
+    image: mongo:latest
+    container_name: tesp-db
+    volumes:
+      - ./docker/mongodb/data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=tesp
+    ports:
+      - "8081:27017"
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./docker/rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro
+      - ./docker/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+      - ./docker/rabbitmq/data/:/var/lib/rabbitmq/
+      - ./docker/rabbitmq/logs/:/var/log/rabbitmq/
+    profiles:
+      - donotstart
+
+  pulsar_ampq:
+    build:
+      context: ./docker/pulsar_ampq
+      dockerfile: Dockerfile
+      target: development
+    image: pulsar_ampq
+    container_name: pulsar-ampq
+    expose:
+      - "8913"
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./docker/pulsar_ampq/app.yml:/opt/pysetup/app.yml
+      - ./docker/pulsar_ampq/data/:/opt/pysetup/files/staging/
+    profiles:
+      - donotstart
+
+  pulsar_rest:
+    build:
+      context: ./docker/pulsar_rest
+      dockerfile: Dockerfile
+      target: development
+    image: pulsar_rest
+    container_name: pulsar-rest
+    privileged: true
+    expose:
+      - "8913"
+    volumes:
+      - ./docker/pulsar_rest/app.yml:/opt/pysetup/app.yml
+      - ./docker/pulsar_rest/data/:/opt/pysetup/files/staging/
+
+  minio:
+    container_name: minio
+    image: minio/minio
+    expose:
+      - '9000'
+    ports:
+      - '40949:40949'
+    environment:
+      MINIO_ROOT_USER: 'admin'
+      MINIO_ROOT_PASSWORD: '!Password123'
+    volumes:
+      - ./docker/minio/data/:/data
+    command:
+      server /data --console-address ":40949"
+
+  ftpserver:
+    container_name: tesp-ftp-server
+    image: fclairamb/ftpserver
+    ports:
+      - '2121-2130:2121-2130'
+    depends_on:
+      - minio
+    volumes:
+      - ./docker/ftpserver/data/:/tmp
+      - ./docker/ftpserver/ftpserver.json:/app/ftpserver.json
