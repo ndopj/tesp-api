@@ -45,20 +45,18 @@ services:
     profiles:
       - donotstart
 
-  pulsar_ampq:
+  pulsar_amqp:
     build:
-      context: ./docker/pulsar_ampq
+      context: ./docker/pulsar_amqp
       dockerfile: Dockerfile
       target: development
-    image: pulsar_ampq
-    container_name: pulsar-ampq
-    expose:
-      - "8913"
+    image: pulsar_amqp
+    container_name: pulsar-amqp
     depends_on:
       - rabbitmq
     volumes:
-      - ./docker/pulsar_ampq/app.yml:/opt/pysetup/app.yml
-      - ./docker/pulsar_ampq/data/:/opt/pysetup/files/staging/
+      - ./docker/pulsar_amqp/app.yml:/opt/pysetup/app.yml
+      - ./docker/pulsar_amqp/data/:/opt/pysetup/files/staging/
     profiles:
       - donotstart
 
