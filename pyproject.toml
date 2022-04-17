@@ -1,9 +1,12 @@
 [tool.poetry]
 name = "tesp-api"
 version = "0.0.1"
-license = "Apache-2.0"
+license = "MIT"
 description = "An implementation of a task execution engine based on the TES standard running on Pulsar"
 authors = ["Norbert Dopjera <ndopjera@gmail.com>"]
+maintainers = ["Norbert Dopjera <ndopjera@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/ndopj/tesp-api"
 
 [tool.poetry.dependencies]
 python = "^3.10.0"
