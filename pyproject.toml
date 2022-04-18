@@ -2,7 +2,7 @@
 name = "tesp-api"
 version = "0.0.1"
 license = "MIT"
-description = "An implementation of a task execution engine based on the TES standard running on Pulsar"
+description = "An Open-source implementation of a task execution engine based on the TES standard distributing executions to services exposing Pulsar application."
 authors = ["Norbert Dopjera <ndopjera@gmail.com>"]
 maintainers = ["Norbert Dopjera <ndopjera@gmail.com>"]
 readme = "README.md"
